@@ -194,17 +194,12 @@ instance IsTest QC where
     -- Quickcheck already catches exceptions, no need to do it here.
     r <- testRunner args prop
 
-    qcOutput <- formatMessage $ QC.output r
-    let qcOutputNl =
-          if "\n" `isSuffixOf` qcOutput
-            then qcOutput
-            else qcOutput ++ "\n"
+    let qcOutput = show r
         testSuccessful = successful r
         putReplayInDesc = (not testSuccessful) || showReplay
     return $
       (if testSuccessful then testPassed else testFailed)
-      (qcOutputNl ++
-        (if putReplayInDesc then replayMsg else ""))
+      qcOutput
 
 successful :: QC.Result -> Bool
 successful r =
