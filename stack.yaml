@@ -8,4 +8,6 @@ packages:
 extra-deps:
 - wcwidth-0.0.2
 - ansi-terminal-0.9
+- git: https://github.com/advancedtelematic/quickcheck
+  commit: 6a09f77fcffcc3c22e28504e4a1ab5ff2cd0737f # XXX feat/max-failed-percent
 flags: {}

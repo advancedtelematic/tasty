@@ -99,6 +99,10 @@ newtype QuickCheckVerbose = QuickCheckVerbose Bool
 newtype QuickCheckMaxShrinks = QuickCheckMaxShrinks Int
   deriving (Num, Ord, Eq, Real, Enum, Integral, Typeable)
 
+-- | Maximum ratio of failed tests before giving up
+newtype QuickCheckMaxFailPercent = QuickCheckMaxFailPercent Int
+  deriving (Num, Ord, Eq, Real, Enum, Integral)
+
 instance IsOption QuickCheckTests where
   defaultValue = 100
   parseValue = fmap QuickCheckTests . safeRead
@@ -152,6 +156,13 @@ instance IsOption QuickCheckMaxShrinks where
   optionHelp = return "Number of shrinks allowed before QuickCheck will fail a test"
   optionCLParser = mkOptionCLParser $ metavar "NUMBER"
 
+instance IsOption QuickCheckMaxFailPercent where
+  defaultValue = 0
+  parseValue = fmap QuickCheckMaxFailPercent . safeRead
+  optionName = return "quickcheck-max-fail-percent"
+  optionHelp = return "Maximum ratio of failed tests before giving up"
+  optionCLParser = mkOptionCLParser $ metavar "NUMBER"
+
 -- | Convert tasty options into QuickCheck options.
 --
 -- This is a low-level function that was originally added for tasty-hspec
@@ -191,6 +202,7 @@ instance IsTest QC where
     , Option (Proxy :: Proxy QuickCheckMaxRatio)
     , Option (Proxy :: Proxy QuickCheckVerbose)
     , Option (Proxy :: Proxy QuickCheckMaxShrinks)
+    , Option (Proxy :: Proxy QuickCheckMaxFailPercent)
     ]
 
   run opts (QC prop) _yieldProgress = do
