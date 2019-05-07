@@ -182,16 +182,18 @@ optionSetToArgs opts = do
         , QC.replay          = Just (mkQCGen replaySeed, 0)
         , QC.maxDiscardRatio = maxRatio
         , QC.maxShrinks      = maxShrinks
+        , QC.maxFailPercent  = maxFail
         }
 
   return (replaySeed, args)
 
   where
-    QuickCheckTests      nTests     = lookupOption opts
-    QuickCheckReplay     mReplay    = lookupOption opts
-    QuickCheckMaxSize    maxSize    = lookupOption opts
-    QuickCheckMaxRatio   maxRatio   = lookupOption opts
-    QuickCheckMaxShrinks maxShrinks = lookupOption opts
+    QuickCheckTests      nTests      = lookupOption opts
+    QuickCheckReplay     mReplay     = lookupOption opts
+    QuickCheckMaxSize    maxSize     = lookupOption opts
+    QuickCheckMaxRatio   maxRatio    = lookupOption opts
+    QuickCheckMaxShrinks maxShrinks  = lookupOption opts
+    QuickCheckMaxFailPercent maxFail = lookupOption opts
 
 instance IsTest QC where
   testOptions = return
